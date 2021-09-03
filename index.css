@@ -86,6 +86,7 @@ aside .brand,.price{
 main{
     width: 1000px;
     border: 1px solid blue;
+    height: 1625px;
 }
 
 main .commodity_container{
@@ -162,7 +163,7 @@ main .buy{
 .car_container{
     position: fixed; 
     font-size: 16px; 
-    right: 20px; 
+    right: 30px; 
     bottom: 200px;
     text-decoration: none;
 }
