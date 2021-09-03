@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電動刮鬍刀購物車</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="all_container">
+        <div class="banner">
+            <img src="./images/banner_0.png" alt="">
+        </div>
+        <div class="circle_container">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div style="display: flex;">
+            <aside>
+                <div class="search_container">
+                    <p>搜尋品牌：</p>
+                    <input type="text" class="search" id="search">
+                </div>
+                <!-- <div class="brand_container">
+                    <p>品牌：</p>
+                    <span class="brand">全部</span>
+                    <span class="brand">百靈</span>
+                    <span class="brand">國際牌</span>
+                    <span class="brand">飛利浦</span>
+                </div> -->
+                <div class="price_container">
+                    <p style="margin-right: 30px;">價格：</p>
+                    <span class="price" id="all">全部</span>
+                    <span class="price" id="low">$3000↓</span>
+                    <span class="price" id="middle">$3001~$4999</span>
+                    <span class="price" id="high">$5000↑</span>
+                </div>
+            </aside>
+            <main>
+                <ul class="commodity_container">
+                    <li class="item">
+                        <div class="item_container">
+                            <img src="./images/braun_190s.png" alt="" class="commodity">
+                            <div class="shopping">
+                                <p class="shopping_txt">加入購物車</p>
+                            </div>
+                        </div>
+                        <div class="detail">
+                            <p>品牌：百靈</p>
+                            <p>型號：190S</p>
+                            <p>價格：1000</p>
+                        </div>
+                    </li>
+                </ul>
+            </main>
+            <a href="#" class="car_container">
+                <img src="./images/shopping_icon.png" alt="" class="shopping_car">
+                <span id="car_txt">0</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        //做輪播圖
+        let index = 0;
+        let time = null;
+        let imgName = '';
+        let banner_img = document.querySelector('.banner img');
+        let circle = document.querySelectorAll('.circle_container span');
+        circle[index].style.backgroundColor = 'black';
+
+
+        function img_move(){
+            index++;
+            // console.log(index)
+            change_banner()
+        }
+
+        //輪播圖開始
+        function start(){
+            if(time == null){
+                time = setInterval(img_move,2000);
+            }
+        }
+        start()
+
+        // 輪播圖停止
+        function end(){
+            clearInterval(time)
+            time = null;
+        }
+
+        // 輪播圖函式
+        function change_banner(){
+            if(index > 2){
+                index = 0;
+            }
+            imgName = './images/banner_' + index + '.png';
+            banner_img.src = imgName;
+            // console.log(imgName)
+            for(let i = 0; i < circle.length; i++){
+                for(let j = 0; j < circle.length; j++){
+                    circle[j].style.backgroundColor = '';
+                }
+                circle[index].style.backgroundColor = 'black';
+            }
+        }
+
+        // 小圓按鈕函式
+        circle.forEach((item,num)=>{
+            item.addEventListener('click',function(){
+                console.log(num);
+                end();
+                index = num;
+                change_banner()
+                start();
+            })
+        })
+
+
+        // 購物頁
+
+        let items = document.querySelector('.commodity_container');
+        // console.log(items)
+        let arr = [
+            { brand: "飛利浦", name: "S1232", price: "2,090", url: './images/Philips_1232.png', 價位: 'low'},
+            { brand: "百靈", name: "190S", price: "1,288", url: './images/braun_190s.png', 價位: 'low'},
+            { brand: "國際牌", name: "ES-LT2A-S", price: "3,780", url: './images/panasonic_ES-LT2A-S.png', 價位: 'middle'},
+            { brand: "飛利浦", name: "S6820", price: "5,988", url: './images/Philips_6820.png', 價位: 'high'},
+            { brand: "百靈", name: "B1000S", price: "4,688", url: './images/braun_50-b1000s.png', 價位: 'middle'},
+            { brand: "國際牌", name: "ES-SL83-R", price: "2,890", url: './images/panasonic_ES-SL83-R.png', 價位: 'low'},
+            { brand: "飛利浦", name: "SP9860", price: "24,888", url: './images/Philips_9860.png', 價位: 'high'},
+            { brand: "百靈", name: "310S", price: "1,988", url: './images/braun_310s.png', 價位: 'low'},
+            { brand: "國際牌", name: "ES-ST2S-K", price: "3,088", url: './images/panasonic_ES-ST2S-K.png', 價位: 'middle'},
+            { brand: "飛利浦", name: "S5588", price: "4,488", url: './images/Philips_s5588.png', 價位: 'middle'},
+            { brand: "百靈", name: "M30", price: "788", url: './images/braun_m30.png', 價位: 'low'},
+            { brand: "國際牌", name: "ES-ST6R-R", price: "4,988", url: './images/panasonic_ES-ST6R-R.png', 價位: 'middle'},
+        ];
+        // 渲染商品
+        function load_item(data){
+            items.innerHTML = '';
+            // console.log(data)
+            data.forEach(function(item,index){
+                items.innerHTML += 
+                '<li class="item">' + 
+                    '<div class="item_container">' +
+                        '<img class="commodity" src=' + `${item.url}` + '>' +
+                        '<div class="shopping">' + 
+                            '<p class="shopping_txt">' + '加入購物車' +
+                            '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="detail">' + 
+                        '<p>' + '品牌：' + item.brand + '</p>' +
+                        '<p>' + '型號：' + item.name + '</p>' +
+                        '<p>' + '價格：' + item.price + '</p>' +
+                    '</div>' +
+                '</li>'
+                // console.log(item.brand)
+            })
+        }
+        load_item(arr)
+
+        // 立即購買(事件冒泡待處理)
+        let single = document.querySelectorAll('.item');
+        let shopping = document.querySelectorAll('.shopping');
+        // console.log(single)
+        for(let i = 0; i < single.length; i++){
+            single[i].addEventListener('mouseover',function(e){
+                this.querySelector('.shopping').style.display = 'flex';
+            })
+        }
+
+        for(let j = 0; j < single.length; j++){
+            single[j].addEventListener('mouseout',function(){
+                this.querySelector('.shopping').style.display = 'none';
+            })
+        }
+
+        // 購物車點擊數字增加
+        let confirm_shopping = document.querySelectorAll('.shopping_txt');
+        let shopping_num = document.querySelector('#car_txt');
+        let num = 0;
+        confirm_shopping.forEach((item,index)=>{
+            item.addEventListener('click',function(){
+                shopping_num.innerHTML = ++num;
+            })
+        })
+
+        let state = {
+            txt: '',
+            // brand: '全部',
+            price: '全部'
+        }
+
+        //篩選之按鈕變色
+        let price = document.querySelectorAll('.price');
+
+        let default_price = price[0];
+
+        default_price.style.backgroundColor = 'black';
+
+
+        for(let i = 0; i < price.length; i++){
+            price[i].addEventListener('click',function(){
+                for(let j = 0; j < price.length; j++){
+                    price[j].style.backgroundColor = 'gray';
+                }
+                price[i].style.backgroundColor = 'black';
+                state.price = this.id;
+                console.log(state.price);
+                let newArr = choice_price(arr, state.price);
+                // console.log(newArr)
+                load_item(search_input(newArr, state.txt));
+            })
+        }
+
+        //篩選
+        function choice_price(data, price){
+            if(price == 'all'){
+                return data
+            }else if(price == 'low'){
+                return data.filter(function(item, index){
+                    return price == item.價位;
+                })
+            }else if(price == 'middle'){
+                return data.filter(function(item, index){
+                    return price == item.價位;
+                })
+            }else if(price == 'high'){
+                return data.filter(function(item, index){
+                    return price == item.價位;
+                })
+            }
+        }
+
+        //搜索事件
+        let search = document.querySelector("#search");
+        search.addEventListener('input',function(){
+            state.txt = this.value;
+            // console.log(state.txt)
+            let newArr = search_input(arr, state.txt);
+            load_item(search_input(newArr, state.txt));
+            console.log(newArr)
+            
+        })
+
+        function search_input(data, value){
+            if(!value){
+                return data;
+            }else{
+                return data.filter(function(item,index){
+                    return item.brand.indexOf(value) >= 0;
+                })
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>
