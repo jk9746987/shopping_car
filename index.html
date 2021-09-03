@@ -32,10 +32,10 @@
                 </div> -->
                 <div class="price_container">
                     <p style="margin-right: 30px;">價格：</p>
-                    <span class="price" id="all">全部</span>
-                    <span class="price" id="low">$3000↓</span>
-                    <span class="price" id="middle">$3001~$4999</span>
-                    <span class="price" id="high">$5000↑</span>
+                    <span class="price -on" id="all" key="all">全部</span>
+                    <span class="price" id="low" key="low">$3000↓</span>
+                    <span class="price" id="middle" key="middle">$3001~$4999</span>
+                    <span class="price" id="high" key="high">$5000↑</span>
                 </div>
             </aside>
             <main>
@@ -206,14 +206,17 @@
         for(let i = 0; i < price.length; i++){
             price[i].addEventListener('click',function(){
                 for(let j = 0; j < price.length; j++){
+                    price[j].classList.remove('-on');
                     price[j].style.backgroundColor = 'gray';
                 }
                 price[i].style.backgroundColor = 'black';
+                price[i].classList.add('-on');
                 state.price = this.id;
-                console.log(state.price);
+                // console.log(state.price);
                 let newArr = choice_price(arr, state.price);
-                // console.log(newArr)
+                // console.log(search_input(newArr, state.txt))
                 load_item(search_input(newArr, state.txt));
+                console.log(search)
             })
         }
 
@@ -240,11 +243,28 @@
         let search = document.querySelector("#search");
         search.addEventListener('input',function(){
             state.txt = this.value;
-            // console.log(state.txt)
-            let newArr = search_input(arr, state.txt);
-            load_item(search_input(newArr, state.txt));
-            console.log(newArr)
+            // console.log(newArr)
+            let on = document.querySelector('.-on');
             
+            console.log(on.id)
+            if(this.value == ''){
+                state.price = on.id;
+                let newArr = choice_price(arr, state.price);
+                load_item(search_input(newArr, state.txt));
+            }else{
+                // console.log(state.txt)
+                let newArr = search_input(arr, state.txt);
+                load_item(search_input(newArr, state.txt));
+            }
+            let get_on = document.querySelectorAll('span'); 
+            for(let i = 0; i < get_on.length; i++){
+                if(get_on[i].classList.contains('-on')){
+                    // console.log(get_on[i].id)
+                    state.price = get_on[i].id;
+                    let newArr = choice_price(arr, state.price);
+                    load_item(search_input(newArr, state.txt));
+                } 
+            }
         })
 
         function search_input(data, value){
