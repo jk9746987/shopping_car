@@ -227,6 +227,7 @@
                 // console.log(search_input(newArr, state.txt))
                 load_item(search_input(newArr, state.txt));
                 // console.log(search)
+                go_shopping();
             })
         }
 
@@ -307,6 +308,7 @@
                     let item_info = this.parentNode.querySelector('input').value;
                     additem(item_id,item_info);
                     // console.log(item_id)
+                    // console.log(car_num)
                 })
                 // ,{once:true}
             })
@@ -323,6 +325,8 @@
             if(storage[itemid]){
                 alert('此商品已在購物車內囉!!')
             }else{
+                storage['addItemList'] += `${itemid}, `;
+                storage.setItem(itemid,itemvalue);
                 show_checkout(itemid,itemvalue);
                 let car_txt = document.querySelector('#car_txt');
                 // 將localstorage的ID推入陣列裡並更新手推車的數字
@@ -332,13 +336,8 @@
             }
         }
 
-    //先設定購物手推車的數字為零並為空陣列
-    let car_num = [];
-
     // 將localstorage中的資料放到購物欄內
     function show_checkout(storageid,storagevalue){
-        storage['addItemList'] += `${storageid}, `;
-        storage.setItem(storageid,storagevalue);
         let new_li = document.createElement('li');
         new_li.classList.add('choice_item');
         new_li.classList.add(`${storageid}`)
@@ -402,10 +401,11 @@
                 storage['addItemList'] = storage['addItemList'].replace(`${storageid}, `,``);   
                 // 將localstorage的ID推入陣列裡並更新手推車的數字
                 car_num.pop(`${storageid}`)
+                console.log(car_num.length)
                 car_txt.innerHTML = car_num.length;
             }
         })
-        
+
     }
 
     // 清除全部購物紀錄
@@ -421,8 +421,32 @@
         // 清空購物手推車的數字及陣列
         car_txt.innerHTML = 0;
         car_num = [];
+        // console.log(car_num)
     })
 
+    let load_storage_id = storage['addItemList']
+    let load_storage_arr = load_storage_id.substring(0,load_storage_id.length - 2).split(', ')
+    let car_num = load_storage_arr;
+    //先設定購物手推車的數字為零並為空陣列
+    if(!storage['addItemList']){
+        car_num = [];
+        // console.log(car_num)
+    }
+
+    function load_storage(){
+        if(storage['addItemList']){
+            // console.log(load_storage_arr)
+            car_txt.innerHTML = load_storage_arr.length
+            for(let i = 0; i < load_storage_arr.length; i++){
+                load_storage_info = storage.getItem(load_storage_arr[i]);
+                // console.log(load_storage_arr[0])
+                // console.log(storage.getItem(load_storage_arr[0]))
+                show_checkout(load_storage_arr[i],load_storage_info)
+            }
+            // console.log('haha')
+        }
+    }
+    load_storage()
 
 
     </script>
