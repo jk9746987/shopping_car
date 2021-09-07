@@ -170,7 +170,7 @@
                         <img class="commodity" src=${item.url}> 
                         <div class="shopping">
                             <span class="shopping_txt">加入購物車</span>
-                            <input type="hidden" value="${item.name}|${item.url}|${item.price}">
+                            <input type="hidden" value="${item.name}|${item.url}|${item.price}" id="value">
                         </div>
                     </div>
                     <div class="detail">
@@ -299,12 +299,14 @@
             if(storage['addItemList'] == null){
                 storage.setItem('addItemList','');
             }
+            
             confirm_shopping.forEach((item,index)=>{
                 item.addEventListener('click',function(){
                     checkout.style.display = 'block';
                     let item_id = this.parentNode.parentNode.parentNode.id;
                     let item_info = this.parentNode.querySelector('input').value;
                     additem(item_id,item_info);
+                    // console.log(item_id)
                 })
                 // ,{once:true}
             })
@@ -316,94 +318,113 @@
             })
         }
         go_shopping();
-
         function additem(itemid,itemvalue){
             // console.log(itemvalue)
             if(storage[itemid]){
                 alert('此商品已在購物車內囉!!')
             }else{
-                storage['addItemList'] += `${itemid}, `;
-                storage.setItem(itemid,itemvalue);
-                let new_li = document.createElement('li');
-                new_li.classList.add('choice_item');
-                new_li.classList.add(`${itemid}`)
-                checkout_container.append(new_li);
-                let new_div = document.createElement('div');
-                new_div.className = 'choice_detail';
-                new_li.append(new_div);
-                let new_img = `<img src=${itemvalue.split('|')[1]} class="choice_item_img">`
-                // console.log(new_img)
-                new_div.insertAdjacentHTML("beforebegin", new_img);
-                let all_detail =
-                    `<p class="checkout_model">型號：` + itemvalue.split('|')[0] + `</p>
-                    <p class="checkout_price">價格：` + itemvalue.split('|')[2] + `</p>
-                    <div class="item_number">
-                        <img src="./images/reduce.png" class="reduce">
-                        <p class="choice_number">1</p>
-                        <img src="./images/add.png" class="add">
-                    </div>
-                    `;
-                new_div.insertAdjacentHTML("beforeend", all_detail);
-                let choice_clear = `<img src="./images/clear.png" class="clear">`;
-                new_div.insertAdjacentHTML("afterend", choice_clear);
-                
-                //點擊商品數量數字增加&減少
-                let count = 1;
-                let add = document.querySelector(`.${itemid} .add`);
-                let num = document.querySelector(`.${itemid} .choice_number`)
-                let item_price = document.querySelector(`.${itemid} .checkout_price`);
-                let reduce = document.querySelector(`.${itemid} .reduce`);
-                let item_clear = document.querySelector(`.${itemid} .clear`);
-                // console.log(item_price.innerHTML);
-                // console.log(itemvalue.split('|')[2])
-                add.addEventListener('click',function(){
-                    num.innerHTML = ++count;
-                    item_price.innerHTML = '價格：' + (itemvalue.split('|')[2] * num.innerHTML);
-                })
-                reduce.addEventListener('click',function(){
-                    num.innerHTML = --count;
-                    item_price.innerHTML = '價格：' + (itemvalue.split('|')[2] * num.innerHTML);
-                    console.log(count)
-                    if(count == 0){
-                        if(!confirm('確認要刪除嗎？')){
-                            count = 1;
-                            num.innerHTML = count;
-                            // console.log(count);
-                            item_price.innerHTML = '價格：' + itemvalue.split('|')[2];
-                        }else{
-                            new_li.remove();
-                            storage.removeItem(`${itemid}`);
-                            storage.setItem('addItemList','');
-                        }
-                    }
-                })
-                item_clear.addEventListener('click',function(){
-                    if(confirm("確認要刪除嗎？")){
-                        new_li.remove();
-                        storage.removeItem(`${itemid}`);
-                        storage.setItem('addItemList','');
-                    }
-                })
+                show_checkout(itemid,itemvalue);
+                let car_txt = document.querySelector('#car_txt');
+                // 將localstorage的ID推入陣列裡並更新手推車的數字
+                car_num.push(`${itemid}`)
+                // console.log(car_num)
+                car_txt.innerHTML = car_num.length;
             }
-
-            let clear_all_item = document.querySelector('.clear_all_item')
-            let choice_item = document.querySelectorAll('.choice_item')
-            // console.log(choice_item)
-            clear_all_item.addEventListener('click',function(){
-                storage.clear();
-                if(storage['addItemList'] == null){
-                    storage.setItem('addItemList','');
-                }
-                for(let i = 0; i < choice_item.length; i++){
-                    for(let j = 0; j < choice_item.length; j++){
-                        choice_item[j].remove()
-                    }
-                }
-            })
         }
-        // localStorage.clear()
-    
-    
+
+    //先設定購物手推車的數字為零並為空陣列
+    let car_num = [];
+
+    // 將localstorage中的資料放到購物欄內
+    function show_checkout(storageid,storagevalue){
+        storage['addItemList'] += `${storageid}, `;
+        storage.setItem(storageid,storagevalue);
+        let new_li = document.createElement('li');
+        new_li.classList.add('choice_item');
+        new_li.classList.add(`${storageid}`)
+        checkout_container.append(new_li);
+        let new_div = document.createElement('div');
+        new_div.className = 'choice_detail';
+        new_li.append(new_div);
+        let new_img = `<img src=${storagevalue.split('|')[1]} class="choice_item_img">`
+        // console.log(new_img)
+        new_div.insertAdjacentHTML("beforebegin", new_img);
+        let all_detail =
+            `<p class="checkout_model">型號：` + storagevalue.split('|')[0] + `</p>
+            <p class="checkout_price">價格：` + storagevalue.split('|')[2] + `</p>
+            <div class="item_number">
+                <img src="./images/reduce.png" class="reduce">
+                <p class="choice_number">1</p>
+                <img src="./images/add.png" class="add">
+            </div>
+            `;
+        new_div.insertAdjacentHTML("beforeend", all_detail);
+        let choice_clear = `<img src="./images/clear.png" class="clear">`;
+        new_div.insertAdjacentHTML("afterend", choice_clear);
+        
+        //點擊商品數量數字增加&減少
+        let count = 1;
+        let add = document.querySelector(`.${storageid} .add`);
+        let num = document.querySelector(`.${storageid} .choice_number`)
+        let item_price = document.querySelector(`.${storageid} .checkout_price`);
+        let reduce = document.querySelector(`.${storageid} .reduce`);
+        let item_clear = document.querySelector(`.${storageid} .clear`);
+        // console.log(item_price.innerHTML);
+        // console.log(itemvalue.split('|')[2])
+        add.addEventListener('click',function(){
+            num.innerHTML = ++count;
+            item_price.innerHTML = '價格：' + (storagevalue.split('|')[2] * num.innerHTML);
+        })
+        reduce.addEventListener('click',function(){
+            num.innerHTML = --count;
+            item_price.innerHTML = '價格：' + (storagevalue.split('|')[2] * num.innerHTML);
+            // console.log(count)
+            if(count == 0){
+                if(!confirm('確認要刪除嗎？')){
+                    count = 1;
+                    num.innerHTML = count;
+                    // console.log(count);
+                    item_price.innerHTML = '價格：' + storagevalue.split('|')[2];
+                }else{
+                    new_li.remove();
+                    storage.removeItem(`${storageid}`);
+                    storage['addItemList'] = storage['addItemList'].replace(`${storageid}, `,``);
+                    // 將localstorage的ID推入陣列裡並更新手推車的數字
+                    car_num.pop(`${storageid}`)
+                    car_txt.innerHTML = car_num.length;
+                }
+            }
+        })
+        item_clear.addEventListener('click',function(){
+            if(confirm("確認要刪除嗎？")){
+                new_li.remove();
+                storage.removeItem(`${storageid}`);
+                storage['addItemList'] = storage['addItemList'].replace(`${storageid}, `,``);   
+                // 將localstorage的ID推入陣列裡並更新手推車的數字
+                car_num.pop(`${storageid}`)
+                car_txt.innerHTML = car_num.length;
+            }
+        })
+        
+    }
+
+    // 清除全部購物紀錄
+    let clear_all_item = document.querySelector('.clear_all_item')
+    let choice_item = document.querySelectorAll('.choice_item')
+    // console.log(clear_all_item)
+    clear_all_item.addEventListener('click',function(){
+        storage.clear();
+        if(storage['addItemList'] == null){
+            storage.setItem('addItemList','');
+        }
+        checkout_container.innerHTML = '';
+        // 清空購物手推車的數字及陣列
+        car_txt.innerHTML = 0;
+        car_num = [];
+    })
+
+
+
     </script>
 
 
