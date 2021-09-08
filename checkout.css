@@ -1,0 +1,102 @@
+.outside{
+    display: flex;
+    justify-content: center;
+}
+
+.item_container{
+    margin-top: 50px;
+}
+
+.item_container{
+    width: 650px;
+}
+
+.checkout_container{
+    padding: 0;
+}
+
+.checkout_list{
+    width: 650px;
+    margin: 10px 0 10px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid black;
+    position: relative;
+    display: flex;
+}
+
+.checkout_list .detail{
+    margin-left: 15px;
+}
+
+.checkout_list .item_img{
+    width: 100px;
+    height: 100px;
+    margin-left: 20px;
+}
+
+.checkout_list .model{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.checkout_list .price{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.checkout_list .item_number{
+    display: flex;
+    padding-top: 20px;
+}
+
+.checkout_list .reduce{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkout_list .number{
+    font-size: 16px;
+    padding-top: 2px;
+    margin: 0 20px 0 20px;
+}
+
+.checkout_list .add{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkout_list .clear{
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.confirm{
+    margin-left: 100px;
+    border: 1px solid black;
+    width: 400px;
+    height: 500px;
+    padding: 20px;
+    margin-top: 200px;
+}
+
+.confirm .total{
+    font-size: 36px;
+}
+
+.confirm .agree{
+    display: block;
+}
+
+.confirm .go{
+    text-decoration: none;
+    color: black;
+}
