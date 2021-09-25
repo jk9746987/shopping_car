@@ -83,9 +83,12 @@
     margin-left: 100px;
     border: 1px solid black;
     width: 400px;
-    height: 500px;
-    padding: 20px;
+    height: 400px;
+    /* padding: 20px; */
     margin-top: 200px;
+    background-color: lightgray;
+    text-align: center;
+    line-height: 30px;
 }
 
 .confirm .total{
@@ -96,7 +99,41 @@
     display: block;
 }
 
+.confirm .check{
+    width: 20px;
+    height: 20px;
+    vertical-align:text-bottom;
+    margin: 0;
+}
+
 .confirm .go{
     text-decoration: none;
     color: black;
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+    background-color: orange;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    position: relative;
+    bottom: -51px;
+}
+
+.confirm .go:hover{
+    color: white;
+}
+
+.confirm .go_txt{
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+    background-color: orange;
+    font-size: 24px;
+    font-weight: 800;
+    opacity: 0.6;
+    margin: 0;
+    position: relative;
+    bottom: -51px;
+    /* bottom: 0; */
 }

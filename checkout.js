@@ -88,7 +88,16 @@ function show_checkout(storageid,storagevalue){
             new_li.remove();
             storage.removeItem(`${storageid}`);
             storage['addItemList'] = storage['addItemList'].replace(`${storageid}, `,``);   
+            
         }
+        let all = 0;
+        let all_price = document.querySelectorAll('.price span');
+        for(let i = 0; i < all_price.length; i++){
+            console.log(all_price[i].innerHTML);
+            all = all + all_price[i].innerHTML;
+        }
+        total_price.innerHTML = all;
+        // total += parseInt(load_storage_info.split('|')[2]);
     })
 
     function add_price(num){
@@ -102,3 +111,14 @@ function show_checkout(storageid,storagevalue){
     // add_reduce_price()
 
 }
+
+let check = document.querySelector('.check')
+let checked = false;
+let go = document.querySelector('.go')
+let go_txt = document.querySelector('.go_txt')
+check.addEventListener('click',function(){
+    checked = !checked
+    // console.log(checked)
+    go.style.display = checked ? 'block' : 'none';
+    go_txt.style.display = checked ? 'none' : 'block';
+})
