@@ -55,6 +55,7 @@ function show_checkout(storageid,storagevalue){
     let add = document.querySelector(`.${storageid} .add`);
     let num = document.querySelector(`.${storageid} .number`)
     let item_price = document.querySelector(`.${storageid} .price span`);
+    // console.log(item_price.innerHTML)
     let reduce = document.querySelector(`.${storageid} .reduce`);
     let item_clear = document.querySelector(`.${storageid} .clear`);
     // console.log(item_price_span);
@@ -69,12 +70,20 @@ function show_checkout(storageid,storagevalue){
         item_price.innerHTML = storagevalue.split('|')[2] * num.innerHTML;
         reduce_price(storagevalue.split('|')[2])
         // console.log(count)
+        console.log(item_price.innerHTML)
         if(count == 0){
             if(!confirm('確認要刪除嗎？')){
                 count = 1;
                 num.innerHTML = count;
                 // console.log(count);
-                item_price.innerHTML = '價格：' + storagevalue.split('|')[2];
+                item_price.innerHTML = storagevalue.split('|')[2];
+                let all = 0;
+                let all_price = document.querySelectorAll('.price span');
+                for(let i = 0; i < all_price.length; i++){
+                    console.log(all_price[i].innerHTML);
+                    all = all + Number(all_price[i].innerHTML);
+                }
+                total_price.innerHTML = all;
             }else{
                 new_li.remove();
                 storage.removeItem(`${storageid}`);
@@ -94,7 +103,7 @@ function show_checkout(storageid,storagevalue){
         let all_price = document.querySelectorAll('.price span');
         for(let i = 0; i < all_price.length; i++){
             console.log(all_price[i].innerHTML);
-            all = all + all_price[i].innerHTML;
+            all = all + Number(all_price[i].innerHTML);
         }
         total_price.innerHTML = all;
         // total += parseInt(load_storage_info.split('|')[2]);
